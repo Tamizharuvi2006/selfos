@@ -1,5 +1,5 @@
 {
-  "name": "selfos-neonglass-3omjwxart3mmt77kxpmgc",
+  "name": "vite-cfagents-runner",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,8 +9,7 @@
     "lint": "eslint --cache -f json --quiet .",
     "preview": "bun run build && vite preview --host 0.0.0.0 --port ${PORT:-4173}",
     "deploy": "bun run build && wrangler deploy",
-    "cf-typegen": "wrangler types",
-    "prepare": "bun .bootstrap.js || true"
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@cloudflare/workers-types": "^4.20250807.0",
@@ -77,6 +76,7 @@
     "react-router-dom": "6.30.0",
     "react-select": "^5.10.2",
     "react-swipeable": "^7.0.2",
+    "react-tsparticles": "^2.12.2",
     "react-use": "^17.6.0",
     "recharts": "2.15.4",
     "sonner": "^2.0.6",
