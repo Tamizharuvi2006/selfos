@@ -94,14 +94,14 @@ const Window: React.FC<WindowProps> = ({ id }) => {
           }}
           className={cn({ 'transition-all duration-200': win.isMaximized })}
           handleClasses={{
-            right: 'absolute right-0 top-0 h-full w-2 cursor-ew-resize',
-            left: 'absolute left-0 top-0 h-full w-2 cursor-ew-resize',
-            top: 'absolute top-0 left-0 w-full h-2 cursor-ns-resize',
-            bottom: 'absolute bottom-0 left-0 w-full h-2 cursor-ns-resize',
-            bottomRight: 'absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize',
-            bottomLeft: 'absolute bottom-0 left-0 h-4 w-4 cursor-nesw-resize',
-            topRight: 'absolute top-0 right-0 h-4 w-4 cursor-nesw-resize',
-            topLeft: 'absolute top-0 left-0 h-4 w-4 cursor-nwse-resize',
+            right: 'absolute right-0 top-0 h-full w-2 cursor-ew-resize hover:bg-accent/50 transition-colors duration-300',
+            left: 'absolute left-0 top-0 h-full w-2 cursor-ew-resize hover:bg-accent/50 transition-colors duration-300',
+            top: 'absolute top-0 left-0 w-full h-2 cursor-ns-resize hover:bg-accent/50 transition-colors duration-300',
+            bottom: 'absolute bottom-0 left-0 w-full h-2 cursor-ns-resize hover:bg-accent/50 transition-colors duration-300',
+            bottomRight: 'absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize hover:bg-accent/50 transition-colors duration-300 rounded-bl-lg',
+            bottomLeft: 'absolute bottom-0 left-0 h-4 w-4 cursor-nesw-resize hover:bg-accent/50 transition-colors duration-300 rounded-br-lg',
+            topRight: 'absolute top-0 right-0 h-4 w-4 cursor-nesw-resize hover:bg-accent/50 transition-colors duration-300 rounded-tl-lg',
+            topLeft: 'absolute top-0 left-0 h-4 w-4 cursor-nwse-resize hover:bg-accent/50 transition-colors duration-300 rounded-tr-lg',
           }}
         >
           <div className="flex flex-col h-full w-full">

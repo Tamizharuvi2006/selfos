@@ -40,17 +40,21 @@ const AIHub: React.FC = () => {
     setIsLoading(true);
     setStreamingMessage('');
     // Prepend persona prompt to user message for context
+    let accumulatedResponse = '';
     const fullPrompt = `${personaPrompts[persona]}\n\nUser: ${userInput}\n\nAI:`;
     await chatService.sendMessage(fullPrompt, undefined, (chunk) => {
-      setStreamingMessage(prev => prev + chunk);
+      accumulatedResponse += chunk;
+      setStreamingMessage(accumulatedResponse);
     });
-    const finalBotMessage: Message = { id: crypto.randomUUID(), text: streamingMessage, sender: 'bot' };
-    setMessages(prev => [...prev, finalBotMessage]);
+    
+    // This ensures the final, complete message is added to the state
+    const finalBotMessage: Message = { id: crypto.randomUUID(), text: accumulatedResponse, sender: 'bot' };
+    setMessages(prev => [...prev, finalBotMessage]); // Add the final message
     setStreamingMessage('');
     setIsLoading(false);
   };
   useEffect(() => {
-    if (scrollAreaRef.current) {
+    if (scrollAreaRef.current?.viewport) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
     }
   }, [messages, streamingMessage]);
@@ -77,10 +81,10 @@ const AIHub: React.FC = () => {
               key={msg.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`flex items-start gap-3 ${msg.sender === 'user' ? 'justify-end' : ''}`}
+              className={`flex items-end gap-3 ${msg.sender === 'user' ? 'justify-end' : ''}`}
             >
-              {msg.sender === 'bot' && <Bot className="w-6 h-6 text-accent flex-shrink-0" />}
-              <div className={`max-w-[80%] p-3 rounded-2xl ${
+              {msg.sender === 'bot' && <Bot className="w-6 h-6 text-accent flex-shrink-0 mb-1" />}
+              <div className={`max-w-[80%] p-3 rounded-2xl whitespace-pre-wrap ${
                 msg.sender === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none'
               }`}>
                 {msg.text}
@@ -92,9 +96,9 @@ const AIHub: React.FC = () => {
              <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex items-start gap-3"
+              className="flex items-end gap-3"
             >
-              <Bot className="w-6 h-6 text-accent flex-shrink-0" />
+              <Bot className="w-6 h-6 text-accent flex-shrink-0 mb-1" />
               <div className="max-w-[80%] p-3 rounded-2xl bg-muted rounded-bl-none">
                 {streamingMessage}<span className="animate-pulse">|</span>
               </div>
