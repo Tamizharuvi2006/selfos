@@ -77,12 +77,7 @@ function updateWranglerJsonc() {
 }
 
 function runSetupCommands() {
-    const commands = [
-    "bun add react-tsparticles@^2.12.2",
-    "bun install react-tsparticles @tsparticles/react @tsparticles/slim framer-motion @dnd-kit/core @dnd-kit/utilities zustand immer lucide-react",
-    "bun install re-resizable",
-    "bun install @tsparticles/react@^3.0.0 @tsparticles/slim@^3.9.1 re-resizable@^6.11.2"
-];
+    const commands = [];
     
     if (commands.length === 0) {
         console.log('⊘ No setup commands to run');
