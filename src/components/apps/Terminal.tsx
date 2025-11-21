@@ -39,7 +39,6 @@ const Terminal: React.FC = () => {
     setTimeout(() => setCopiedLine(null), 1500);
   };
   const handleCommand = (cmd: string) => {
-    const newLines = [...lines, { type: 'input' as const, content: `> ${cmd}` }];
     let output = '';
     switch (cmd.toLowerCase()) {
       case 'help':
@@ -63,7 +62,9 @@ const Terminal: React.FC = () => {
       default:
         output = `command not found: ${cmd}`;
     }
-    setLines(newLines);
+    setLines(prevLines => [
+      ...prevLines, { type: 'input' as const, content: `> ${cmd}` }
+    ]);
     setIsTyping(true);
     setTimeout(() => {
       setLines(prev => [...prev, { type: 'output', content: output }]);
