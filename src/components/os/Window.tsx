@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useDragControls } from 'framer-motion';
 import { X, Minimize, Maximize2 } from 'lucide-react';
-import { useWindowManagerStore, appRegistry } from './WindowManager';
+import { useWindowManagerStore } from '@/stores/windowStore';
+import { appRegistry } from '@/components/os/appRegistry';
 import { cn } from '@/lib/utils';
 import { Resizable } from 're-resizable';
 interface WindowProps {
@@ -13,6 +14,17 @@ const Window: React.FC<WindowProps> = ({ id }) => {
   const activeWindowId = useWindowManagerStore(state => state.activeWindowId);
   const dragControls = useDragControls();
   const constraintsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeWindowId === id) {
+        if (e.key === 'Escape') {
+          closeWindow(id);
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [id, activeWindowId, closeWindow]);
   if (!win) return null;
   const AppComponent = appRegistry[win.appId]?.component;
   const isActive = activeWindowId === id;
@@ -39,6 +51,9 @@ const Window: React.FC<WindowProps> = ({ id }) => {
     <>
       <div ref={constraintsRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       <motion.div
+        role="dialog"
+        aria-label={win.title}
+        aria-modal="true"
         drag
         dragListener={false}
         dragControls={dragControls}
@@ -47,7 +62,7 @@ const Window: React.FC<WindowProps> = ({ id }) => {
         onDragEnd={handleDragEnd}
         onPointerDown={() => focusWindow(id)}
         className={cn(
-          "absolute pointer-events-auto flex flex-col rounded-lg shadow-2xl",
+          "absolute pointer-events-auto flex flex-col rounded-lg shadow-2xl touch-manipulation",
           "bg-card/60 backdrop-blur-[20px] border border-white/10 will-change-transform",
           {
             'shadow-[0_0_40px_-10px_hsl(var(--accent))]': isActive,
@@ -102,9 +117,9 @@ const Window: React.FC<WindowProps> = ({ id }) => {
                 <span className="text-sm font-medium text-foreground">{win.title}</span>
               </div>
               <div className="flex items-center gap-1">
-                <button onClick={() => minimizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Minimize className="w-3 h-3" /></button>
-                <button onClick={() => toggleMaximizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Maximize2 className="w-3 h-3" /></button>
-                <button onClick={() => closeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-red-500 transition-colors"><X className="w-4 h-4" /></button>
+                <button aria-label="Minimize window" onClick={() => minimizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Minimize className="w-3 h-3" /></button>
+                <button aria-label="Maximize window" onClick={() => toggleMaximizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Maximize2 className="w-3 h-3" /></button>
+                <button aria-label="Close window" onClick={() => closeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-red-500 transition-colors"><X className="w-4 h-4" /></button>
               </div>
             </header>
             <main className="flex-1 bg-card/80 overflow-hidden">

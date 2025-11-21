@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Wifi, Battery, Volume2, Settings } from 'lucide-react';
 import ParticleBackground from '@/lib/particles';
 import WindowManager from '@/components/os/WindowManager';
 import Dock from '@/components/os/Dock';
+import BootScreen from '@/components/BootScreen';
 import { applyCurrentTheme, useThemeStore, ThemeName, themes } from '@/lib/themeEngine';
+import { useWindowManagerStore } from '@/stores/windowStore';
 import { Toaster } from '@/components/ui/sonner';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -12,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
 const NeonClock = () => {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -20,7 +23,7 @@ const NeonClock = () => {
   }, []);
   return (
     <div className="text-center font-mono text-foreground">
-      <div className="text-7xl md:text-9xl font-bold" style={{ textShadow: '0 0 10px hsl(var(--accent)), 0 0 20px hsl(var(--accent))' }}>
+      <div className="text-5xl sm:text-7xl md:text-9xl font-bold" style={{ textShadow: '0 0 10px hsl(var(--accent)), 0 0 20px hsl(var(--accent))' }}>
         {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
       </div>
       <div className="text-lg md:text-2xl mt-2 tracking-widest">
@@ -99,11 +102,33 @@ const MoodChips = () => (
 );
 export function HomePage() {
   const themeState = useThemeStore();
+  const [isBooting, setIsBooting] = useState(true);
+  const openWindow = useWindowManagerStore(s => s.openWindow);
   useEffect(() => {
     applyCurrentTheme();
   }, [themeState]);
+  useEffect(() => {
+    const bootTimer = setTimeout(() => {
+      setIsBooting(false);
+      toast.success('System Initialized', { description: 'Welcome to SelfOS.' });
+    }, 3000);
+    return () => clearTimeout(bootTimer);
+  }, []);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.code === 'Space') {
+        e.preventDefault();
+        openWindow('launcher');
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [openWindow]);
   return (
-    <div className="h-screen w-screen overflow-hidden bg-background text-foreground font-sans">
+    <div className="h-screen w-screen overflow-hidden bg-background text-foreground font-sans transition-all duration-500">
+      <AnimatePresence>
+        {isBooting && <BootScreen onComplete={() => setIsBooting(false)} />}
+      </AnimatePresence>
       <ParticleBackground />
       <SystemTray />
       <main className="h-full w-full flex items-center justify-center">
