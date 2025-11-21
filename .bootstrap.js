@@ -79,7 +79,8 @@ function updateWranglerJsonc() {
 function runSetupCommands() {
     const commands = [
     "bun add react-tsparticles@^2.12.2",
-    "bun install react-tsparticles @tsparticles/react @tsparticles/slim framer-motion @dnd-kit/core @dnd-kit/utilities zustand immer lucide-react"
+    "bun install react-tsparticles @tsparticles/react @tsparticles/slim framer-motion @dnd-kit/core @dnd-kit/utilities zustand immer lucide-react",
+    "bun install re-resizable"
 ];
     
     if (commands.length === 0) {
