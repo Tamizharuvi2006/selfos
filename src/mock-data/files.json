@@ -30,7 +30,8 @@
     "type": "image",
     "size": "2.3 MB",
     "modified": "2024-08-10T18:45:00Z",
-    "url": "https://images.unsplash.com/photo-1554147090-e1221a04a025?q=80&w=2070&auto=format&fit=crop"
+    "url": "https://images.unsplash.com/photo-1554147090-e1221a04a025?q=80&w=2070&auto=format&fit=crop",
+    "exif": { "camera": "Sony A7 III", "date": "2024-08-10T18:45:00Z", "tags": ["abstract", "gradient", "wallpaper"] }
   },
   {
     "id": "6",
@@ -45,7 +46,8 @@
     "type": "image",
     "size": "4.1 MB",
     "modified": "2024-07-22T14:10:00Z",
-    "url": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2070&auto=format&fit=crop"
+    "url": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?q=80&w=2070&auto=format&fit=crop",
+    "exif": { "camera": "Fujifilm X-T4", "date": "2024-07-22T14:10:00Z", "tags": ["city", "night", "tokyo", "neon"] }
   },
   {
     "id": "8",
@@ -79,5 +81,50 @@
     "name": "Downloads",
     "type": "folder",
     "modified": "2024-08-15T12:00:00Z"
+  },
+  {
+    "id": "13",
+    "name": "neon_city.jpg",
+    "type": "image",
+    "size": "3.2 MB",
+    "modified": "2024-08-11T22:15:00Z",
+    "url": "https://images.unsplash.com/photo-1519817914152-22d216bb9170?q=80&w=1974&auto=format&fit=crop",
+    "exif": { "camera": "Canon EOS R", "date": "2024-08-11T22:15:00Z", "tags": ["cyberpunk", "night", "cityscape"] }
+  },
+  {
+    "id": "14",
+    "name": "data_stream.jpg",
+    "type": "image",
+    "size": "1.8 MB",
+    "modified": "2024-08-09T11:30:00Z",
+    "url": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop",
+    "exif": { "camera": "Nikon Z6", "date": "2024-08-09T11:30:00Z", "tags": ["technology", "data", "office"] }
+  },
+  {
+    "id": "15",
+    "name": "forest_path.jpg",
+    "type": "image",
+    "size": "5.5 MB",
+    "modified": "2024-07-30T06:00:00Z",
+    "url": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2071&auto=format&fit=crop",
+    "exif": { "camera": "Sony A7R IV", "date": "2024-07-30T06:00:00Z", "tags": ["nature", "forest", "path", "green"] }
+  },
+  {
+    "id": "16",
+    "name": "arcade_glow.jpg",
+    "type": "image",
+    "size": "3.9 MB",
+    "modified": "2024-08-05T19:20:00Z",
+    "url": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071&auto=format&fit=crop",
+    "exif": { "camera": "Leica Q2", "date": "2024-08-05T19:20:00Z", "tags": ["gaming", "arcade", "neon", "retro"] }
+  },
+  {
+    "id": "17",
+    "name": "coastal_drive.jpg",
+    "type": "image",
+    "size": "6.1 MB",
+    "modified": "2024-07-15T17:00:00Z",
+    "url": "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=1974&auto=format&fit=crop",
+    "exif": { "camera": "DJI Mavic 3", "date": "2024-07-15T17:00:00Z", "tags": ["drone", "coast", "roadtrip", "ocean"] }
   }
 ]

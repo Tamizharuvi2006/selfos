@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Wifi, Battery, Volume2 } from 'lucide-react';
+import { Wifi, Battery, Volume2, Settings } from 'lucide-react';
 import ParticleBackground from '@/lib/particles';
 import WindowManager from '@/components/os/WindowManager';
 import Dock from '@/components/os/Dock';
-import { applyCurrentTheme, useThemeStore } from '@/lib/themeEngine';
+import { applyCurrentTheme, useThemeStore, ThemeName, themes } from '@/lib/themeEngine';
 import { Toaster } from '@/components/ui/sonner';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { Input } from '@/components/ui/input';
 const NeonClock = () => {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
@@ -23,14 +29,59 @@ const NeonClock = () => {
     </div>
   );
 };
+const ThemeCustomizer = () => {
+  const { theme, accentColor, glowIntensity, blurDepth, setTheme, setAccentColor, setGlowIntensity, setBlurDepth } = useThemeStore();
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground">
+          <Settings size={18} />
+        </Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Theme Settings</SheetTitle>
+        </SheetHeader>
+        <div className="space-y-6 py-6">
+          <div className="space-y-2">
+            <Label>Theme Preset</Label>
+            <Select value={theme} onValueChange={(value: ThemeName) => setTheme(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a theme" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.keys(themes).map(name => (
+                  <SelectItem key={name} value={name}>{name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label>Accent Color</Label>
+            <Input type="color" value={accentColor} onChange={(e) => setAccentColor(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Glow Intensity: {Math.round(glowIntensity * 100)}%</Label>
+            <Slider value={[glowIntensity]} onValueChange={([v]) => setGlowIntensity(v)} max={1} step={0.05} />
+          </div>
+          <div className="space-y-2">
+            <Label>Blur Depth: {blurDepth}px</Label>
+            <Slider value={[blurDepth]} onValueChange={([v]) => setBlurDepth(v)} max={40} step={1} />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+};
 const SystemTray = () => (
-  <div className="absolute top-4 right-4 flex items-center gap-4 text-foreground/80 text-sm">
+  <div className="absolute top-4 right-4 flex items-center gap-4 text-foreground/80 text-sm z-50">
     <Volume2 size={18} />
     <Wifi size={18} />
     <div className="flex items-center gap-1">
       <Battery size={18} />
       <span>98%</span>
     </div>
+    <ThemeCustomizer />
   </div>
 );
 const MoodChips = () => (
@@ -47,10 +98,10 @@ const MoodChips = () => (
   </div>
 );
 export function HomePage() {
-  const theme = useThemeStore(s => s.theme);
+  const themeState = useThemeStore();
   useEffect(() => {
     applyCurrentTheme();
-  }, [theme]);
+  }, [themeState]);
   return (
     <div className="h-screen w-screen overflow-hidden bg-background text-foreground font-sans">
       <ParticleBackground />
@@ -69,7 +120,7 @@ export function HomePage() {
         <p>AI usage: requests to Cloudflare AI Gateway are rate-limited; usage across all apps may be capped.</p>
         <p>Built with ❤️ at Cloudflare</p>
       </footer>
-      <Toaster richColors closeButton />
+      <Toaster richColors closeButton theme={useThemeStore.getState().theme.includes('Minimal') ? 'light' : 'dark'} />
     </div>
   );
 }
