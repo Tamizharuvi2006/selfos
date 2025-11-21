@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { useWindowManagerStore, appRegistry } from './WindowManager';
+import { useWindowManagerStore } from '@/stores/windowStore';
+import { appRegistry } from '@/components/os/appRegistry';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -37,7 +38,7 @@ const LauncherGrid: React.FC = () => {
         </TabsList>
         <ScrollArea className="flex-1 mt-6">
           {filteredApps.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <div className="p-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
               {filteredApps.map(([appId, app]) => (
                 <motion.div
                   key={appId}
@@ -50,7 +51,7 @@ const LauncherGrid: React.FC = () => {
                   <div className="w-24 h-24 rounded-3xl shadow-lg group-hover:shadow-accent transition-shadow duration-200 p-2 bg-card/50">
                     <app.icon className="w-full h-full text-accent" />
                   </div>
-                  <span className="text-sm font-medium text-foreground">{app.name}</span>
+                  <span className="text-sm font-medium text-foreground text-center">{app.name}</span>
                 </motion.div>
               ))}
             </div>
