@@ -1,0 +1,27 @@
+{
+  "networkMetrics": [
+    { "time": "00:00", "traffic": 2.4, "threats": 0 },
+    { "time": "01:00", "traffic": 2.2, "threats": 0 },
+    { "time": "02:00", "traffic": 3.1, "threats": 1 },
+    { "time": "03:00", "traffic": 4.5, "threats": 0 },
+    { "time": "04:00", "traffic": 4.2, "threats": 3 },
+    { "time": "05:00", "traffic": 5.1, "threats": 2 },
+    { "time": "06:00", "traffic": 5.5, "threats": 1 },
+    { "time": "07:00", "traffic": 6.2, "threats": 0 },
+    { "time": "08:00", "traffic": 5.8, "threats": 5 }
+  ],
+  "forensicsEvents": [
+    { "id": "evt-1", "timestamp": "2024-08-16T08:05:12Z", "type": "Login Success", "description": "User 'root' logged in from 192.168.1.10" },
+    { "id": "evt-2", "timestamp": "2024-08-16T08:15:30Z", "type": "File Access", "description": "Accessed /etc/shadow" },
+    { "id": "evt-3", "timestamp": "2024-08-16T08:15:45Z", "type": "Suspicious Process", "description": "Process 'nc' started with listener on port 4444" },
+    { "id": "evt-4", "timestamp": "2024-08-16T08:20:01Z", "type": "Network Outbound", "description": "Connection established to C2 server at 10.20.30.40" },
+    { "id": "evt-5", "timestamp": "2024-08-16T08:22:50Z", "type": "Data Exfiltration", "description": "1.2 GB of data transferred to 10.20.30.40" },
+    { "id": "evt-6", "timestamp": "2024-08-16T08:30:00Z", "type": "System Alert", "description": "High CPU usage detected from process 'nc'" }
+  ],
+  "vulnerabilities": [
+    { "id": "CVE-2024-1234", "severity": "Critical", "description": "Remote Code Execution in WebServer v1.2", "remediation": "Upgrade WebServer to v1.3 or apply patch #5678." },
+    { "id": "CVE-2024-5678", "severity": "High", "description": "SQL Injection in API endpoint /api/users", "remediation": "Implement parameterized queries and input validation." },
+    { "id": "CVE-2024-9101", "severity": "Medium", "description": "Cross-Site Scripting (XSS) in search bar", "remediation": "Sanitize user input on search results page." },
+    { "id": "CVE-2024-1121", "severity": "Low", "description": "Verbose error messages reveal server path", "remediation": "Configure server to show generic error pages." }
+  ]
+}
