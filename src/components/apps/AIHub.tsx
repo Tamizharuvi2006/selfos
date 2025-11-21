@@ -27,7 +27,7 @@ const AIHub: React.FC = () => {
   const [persona, setPersona] = useState<Persona>('Jarvis');
   const [isLoading, setIsLoading] = useState(false);
   const [streamingMessage, setStreamingMessage] = useState('');
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<any>(null);
   useEffect(() => {
     chatService.newSession(); // Start a new chat session for the AI Hub
   }, []);
@@ -54,8 +54,9 @@ const AIHub: React.FC = () => {
     setIsLoading(false);
   };
   useEffect(() => {
-    if (scrollAreaRef.current?.viewport) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
+    const el = scrollAreaRef.current?.viewport ?? scrollAreaRef.current;
+    if (el && typeof el.scrollTo === 'function') {
+      el.scrollTo({ top: el.scrollHeight ?? 0, behavior: 'smooth' });
     }
   }, [messages, streamingMessage]);
   return (

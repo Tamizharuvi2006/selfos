@@ -10,23 +10,48 @@ interface WindowProps {
 }
 const Window: React.FC<WindowProps> = ({ id }) => {
   const win = useWindowManagerStore(state => state.windows[id]);
-  const { focusWindow, closeWindow, minimizeWindow, toggleMaximizeWindow, updateWindowBounds } = useWindowManagerStore.getState();
+  const focusWindow = useWindowManagerStore(state => state.focusWindow);
+const closeWindow = useWindowManagerStore(state => state.closeWindow);
+const minimizeWindow = useWindowManagerStore(state => state.minimizeWindow);
+const toggleMaximizeWindow = useWindowManagerStore(state => state.toggleMaximizeWindow);
+const updateWindowBounds = useWindowManagerStore(state => state.updateWindowBounds);
   const activeWindowId = useWindowManagerStore(state => state.activeWindowId);
   const dragControls = useDragControls();
   const constraintsRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (activeWindowId === id) {
-        if (e.key === 'Escape') {
-          closeWindow(id);
-        }
+      // Only operate when this window is active
+      if (activeWindowId !== id) return;
+
+      // ESC closes the active window
+      if (e.key === 'Escape') {
+        closeWindow(id);
+        return;
+      }
+
+      // Tab navigation: trap focus within the window
+      if (e.key === 'Tab') {
+        const container = wrapperRef.current;
+        if (!container) return;
+        const nodes = Array.from(container.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        ));
+        const focusable = nodes.filter(el => el.offsetParent !== null);
+        if (focusable.length === 0) return;
+        e.preventDefault();
+        const currentIndex = focusable.indexOf(document.activeElement as HTMLElement);
+        let nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
+        if (nextIndex < 0) nextIndex = focusable.length - 1;
+        if (nextIndex >= focusable.length) nextIndex = 0;
+        focusable[nextIndex].focus();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [id, activeWindowId, closeWindow]);
   if (!win) return null;
-  const AppComponent = appRegistry[win.appId]?.component;
+  const AppComponent = appRegistry[win.appId]?.component as React.ComponentType<any> | undefined;
   const isActive = activeWindowId === id;
   const handleResizeStop = (e: any, direction: any, ref: HTMLElement, d: { width: number, height: number }) => {
     updateWindowBounds(id, {
@@ -51,6 +76,7 @@ const Window: React.FC<WindowProps> = ({ id }) => {
     <>
       <div ref={constraintsRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       <motion.div
+        ref={wrapperRef}
         role="dialog"
         aria-label={win.title}
         aria-modal="true"
@@ -92,7 +118,7 @@ const Window: React.FC<WindowProps> = ({ id }) => {
             top: !win.isMaximized, right: !win.isMaximized, bottom: !win.isMaximized, left: !win.isMaximized,
             topRight: !win.isMaximized, bottomRight: !win.isMaximized, bottomLeft: !win.isMaximized, topLeft: !win.isMaximized
           }}
-          className={cn({ 'transition-all duration-200': win.isMaximized })}
+          className={cn('will-change-transform touch-none', { 'transition-all duration-200': win.isMaximized })}
           handleClasses={{
             right: 'absolute right-0 top-0 h-full w-2 cursor-ew-resize hover:bg-accent/50 transition-colors duration-300',
             left: 'absolute left-0 top-0 h-full w-2 cursor-ew-resize hover:bg-accent/50 transition-colors duration-300',
@@ -117,8 +143,8 @@ const Window: React.FC<WindowProps> = ({ id }) => {
                 <span className="text-sm font-medium text-foreground">{win.title}</span>
               </div>
               <div className="flex items-center gap-1">
-                <button aria-label="Minimize window" onClick={() => minimizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Minimize className="w-3 h-3" /></button>
-                <button aria-label="Maximize window" onClick={() => toggleMaximizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Maximize2 className="w-3 h-3" /></button>
+                <button aria-label="Minimize window" aria-expanded={win.isMinimized} onClick={() => minimizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Minimize className="w-3 h-3" /></button>
+                <button aria-label="Maximize window" aria-expanded={win.isMaximized} onClick={() => toggleMaximizeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-white/20 transition-colors"><Maximize2 className="w-3 h-3" /></button>
                 <button aria-label="Close window" onClick={() => closeWindow(id)} className="w-6 h-6 rounded-full center hover:bg-red-500 transition-colors"><X className="w-4 h-4" /></button>
               </div>
             </header>
