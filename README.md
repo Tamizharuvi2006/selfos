@@ -2,7 +2,7 @@
 
 A futuristic, web-based desktop operating system experience that blends KEI minimalism, Apple-style dock mechanics, VisionOS floating windows, Kali/Parrot cybersecurity aesthetics, and cyberpunk neon-glass visual language. Built on React + Vite + Tailwind + shadcn/ui with Cloudflare Workers, it delivers a production-ready, highly polished UI foundation and GPU-accelerated window manager. The system features a responsive, themeable frontend with mock data, interactive windowing (drag, resize, snap-to-grid, z-index management, fullscreen, minimize/restore), and core apps like File Manager, Photo Manager, Terminal, AI Hub, and Cybersecurity Suite.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Tamizharuvi2006/selfos)
 
 ## Key Features
 
@@ -34,7 +34,7 @@ A futuristic, web-based desktop operating system experience that blends KEI mini
 
 Get started in minutes by deploying to Cloudflare Workers. No local setup required for testing.
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Tamizharuvi2006/selfos)
 
 ## Installation
 
@@ -151,7 +151,7 @@ Deploy to Cloudflare Workers for global edge performance. The template is pre-co
    wrangler pages publish dist --project-name=selfos-neonglass
    ```
 
-[cloudflarebutton]
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Tamizharuvi2006/selfos)
 
 **Production Notes**:
 - Assets are served via Workers Sites for SPA routing.
